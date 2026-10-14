@@ -1,0 +1,422 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+// swift-module-flags: -target x86_64-apple-ios15.0-simulator -enable-objc-interop -enable-library-evolution -language-mode 6 -O -enable-experimental-feature DebugDescriptionMacro -module-name PLzmaSDK -package-name plzmasdk
+// swift-module-flags-ignorable:  -formal-cxx-interoperability-mode=off -interface-compiler-version 6.4
+import Foundation
+import Foundation/*.Bundle*/
+import Foundation/*.ProcessInfo*/
+import Foundation/*.URL*/
+import Swift
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+import libplzma
+public protocol DecoderDelegate : AnyObject {
+  func decoder(decoder: PLzmaSDK::Decoder, path: Swift::String, progress: Swift::Double)
+}
+final public class Decoder : Swift::Sendable {
+  final public func open() throws -> Swift::Bool
+  final public func abort() throws
+  final public func count() throws -> PLzmaSDK::Size
+  final public func items() throws -> PLzmaSDK::ItemArray
+  final public func item(at index: PLzmaSDK::Size) throws -> PLzmaSDK::Item
+  final public func extract(to path: PLzmaSDK::Path, itemsFullPath: Swift::Bool = true) throws -> Swift::Bool
+  final public func extract(items: PLzmaSDK::ItemArray, to path: PLzmaSDK::Path, itemsFullPath: Swift::Bool = true) throws -> Swift::Bool
+  final public func extract(itemsToStreams items: PLzmaSDK::ItemOutStreamArray) throws -> Swift::Bool
+  final public func test(items: PLzmaSDK::ItemArray) throws -> Swift::Bool
+  final public func test() throws -> Swift::Bool
+  final public func setPassword(_ password: Swift::String?) throws
+  public init(stream: PLzmaSDK::InStream, fileType: PLzmaSDK::FileType, delegate: (any PLzmaSDK::DecoderDelegate)? = nil) throws
+  @objc deinit
+}
+public protocol EncoderDelegate : AnyObject {
+  func encoder(encoder: PLzmaSDK::Encoder, path: Swift::String, progress: Swift::Double)
+}
+final public class Encoder : Swift::Sendable {
+  final public func open() throws -> Swift::Bool
+  final public func abort() throws
+  final public func compress() throws -> Swift::Bool
+  final public func add(path: PLzmaSDK::Path, mode: PLzmaSDK::OpenDirMode = .default) throws
+  final public func add(path: PLzmaSDK::Path, mode: PLzmaSDK::OpenDirMode, archivePath: PLzmaSDK::Path) throws
+  final public func add(stream: PLzmaSDK::InStream, archivePath: PLzmaSDK::Path) throws
+  final public func setPassword(_ password: Swift::String?) throws
+  final public func shouldCreateSolidArchive() throws -> Swift::Bool
+  final public func setShouldCreateSolidArchive(_ solid: Swift::Bool) throws
+  final public func compressionLevel() throws -> Swift::UInt8
+  final public func setCompressionLevel(_ level: Swift::UInt8) throws
+  final public func shouldCompressHeader() throws -> Swift::Bool
+  final public func setShouldCompressHeader(_ compress: Swift::Bool) throws
+  final public func shouldCompressHeaderFull() throws -> Swift::Bool
+  final public func setShouldCompressHeaderFull(_ compress: Swift::Bool) throws
+  final public func shouldEncryptContent() throws -> Swift::Bool
+  final public func setShouldEncryptContent(_ encrypt: Swift::Bool) throws
+  final public func shouldEncryptHeader() throws -> Swift::Bool
+  final public func setShouldEncryptHeader(_ encrypt: Swift::Bool) throws
+  final public func shouldStoreCreationTime() throws -> Swift::Bool
+  final public func setShouldStoreCreationTime(_ store: Swift::Bool) throws
+  final public func shouldStoreAccessTime() throws -> Swift::Bool
+  final public func setShouldStoreAccessTime(_ store: Swift::Bool) throws
+  final public func shouldStoreModificationTime() throws -> Swift::Bool
+  final public func setShouldStoreModificationTime(_ store: Swift::Bool) throws
+  public init(stream: PLzmaSDK::OutStream, fileType: PLzmaSDK::FileType, method: PLzmaSDK::Method, delegate: (any PLzmaSDK::EncoderDelegate)? = nil) throws
+  @objc deinit
+}
+public struct Exception : Swift::Error {
+  public let what: Swift::String
+  public let reason: Swift::String
+  public let file: Swift::String
+  public let version: Swift::String
+  public let code: PLzmaSDK::ErrorCode
+  public let line: Swift::Int
+}
+extension PLzmaSDK::Exception : Swift::CustomStringConvertible {
+  public var description: Swift::String {
+    get
+  }
+}
+extension PLzmaSDK::Exception : Swift::CustomDebugStringConvertible {
+  public var debugDescription: Swift::String {
+    get
+  }
+}
+public var version: Swift::String {
+  get
+}
+public var streamReadSize: PLzmaSDK::Size {
+  get
+  set
+}
+public var streamWriteSize: PLzmaSDK::Size {
+  get
+  set
+}
+public var decoderReadSize: PLzmaSDK::Size {
+  get
+  set
+}
+public var decoderWriteSize: PLzmaSDK::Size {
+  get
+  set
+}
+@_hasMissingDesignatedInitializers final public class InStream : Swift::Sendable {
+  final public func opened() throws -> Swift::Bool
+  final public func erase(_ erase: PLzmaSDK::Erase) throws -> Swift::Bool
+  public init(movablePath path: PLzmaSDK::Path) throws
+  public init(path: PLzmaSDK::Path) throws
+  public init(dataCopy: Foundation::Data) throws
+  public init(dataNoCopy: Foundation::Data) throws
+  public init(streams: [PLzmaSDK::InStream]) throws
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers final public class Item : Swift::Sendable {
+  final public func path() throws -> PLzmaSDK::Path
+  final public var index: PLzmaSDK::Size {
+    get
+  }
+  final public var size: Swift::UInt64 {
+    get
+    set
+  }
+  final public var packSize: Swift::UInt64 {
+    get
+    set
+  }
+  final public var crc32: Swift::UInt32 {
+    get
+    set
+  }
+  final public var creationDate: Foundation::Date {
+    get
+    set
+  }
+  final public var accessDate: Foundation::Date {
+    get
+    set
+  }
+  final public var modificationDate: Foundation::Date {
+    get
+    set
+  }
+  final public var timestamp: libplzma::plzma_path_timestamp {
+    get
+    set
+  }
+  final public var encrypted: Swift::Bool {
+    get
+    set
+  }
+  final public var isDir: Swift::Bool {
+    get
+    set
+  }
+  public init(movablePath path: PLzmaSDK::Path, index: PLzmaSDK::Size = 0) throws
+  public init(path: PLzmaSDK::Path, index: PLzmaSDK::Size = 0) throws
+  convenience public init(_ string: Swift::String, index: PLzmaSDK::Size = 0) throws
+  @objc deinit
+}
+extension PLzmaSDK::Item : Swift::Hashable {
+  final public func hash(into hasher: inout Swift::Hasher)
+  public static func == (left: PLzmaSDK::Item, right: PLzmaSDK::Item) -> Swift::Bool
+  final public var hashValue: Swift::Int {
+    get
+  }
+}
+extension PLzmaSDK::Item : Swift::CustomStringConvertible {
+  final public var description: Swift::String {
+    get
+  }
+}
+extension PLzmaSDK::Item : Swift::CustomDebugStringConvertible {
+  final public var debugDescription: Swift::String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers final public class ItemArray : Swift::Sendable {
+  final public var count: PLzmaSDK::Size {
+    get
+  }
+  final public func item(at index: PLzmaSDK::Size) throws -> PLzmaSDK::Item
+  final public func add(item i: PLzmaSDK::Item) throws
+  final public func sort()
+  public init(capacity: PLzmaSDK::Size = 0) throws
+  convenience public init(items: [PLzmaSDK::Item]) throws
+  @objc deinit
+}
+extension PLzmaSDK::ItemArray {
+  public static func += (left: PLzmaSDK::ItemArray, right: PLzmaSDK::Item) throws
+}
+@_hasMissingDesignatedInitializers final public class ItemOutStreamArray : Swift::Sendable {
+  public typealias Pair = (PLzmaSDK::Item, PLzmaSDK::OutStream)
+  final public var count: PLzmaSDK::Size {
+    get
+  }
+  final public func pair(at index: PLzmaSDK::Size) throws -> PLzmaSDK::ItemOutStreamArray.PLzmaSDK::Pair
+  final public func add(item: PLzmaSDK::Item, stream: PLzmaSDK::OutStream) throws
+  final public func sort()
+  public init(capacity: PLzmaSDK::Size = 0) throws
+  convenience public init(items: [PLzmaSDK::Item : PLzmaSDK::OutStream]) throws
+  @objc deinit
+}
+extension PLzmaSDK::ItemOutStreamArray {
+  public static func += (left: PLzmaSDK::ItemOutStreamArray, right: PLzmaSDK::ItemOutStreamArray.PLzmaSDK::Pair) throws
+}
+@_hasMissingDesignatedInitializers final public class OutMultiStream : PLzmaSDK::OutStream, @unchecked Swift::Sendable {
+  public init(directoryPath: PLzmaSDK::Path, partName: Swift::String, partExtension: Swift::String, format: PLzmaSDK::MultiStreamPartNameFormat, partSize: PLzmaSDK::Size) throws
+  public init(partSize: PLzmaSDK::Size) throws
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class OutStream : @unchecked Swift::Sendable {
+  public func opened() throws -> Swift::Bool
+  public func copyContent() throws -> Foundation::Data
+  public func erase(erase: PLzmaSDK::Erase = .none) throws -> Swift::Bool
+  public init(movablePath path: PLzmaSDK::Path) throws
+  public init(path: PLzmaSDK::Path) throws
+  public init() throws
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers final public class Path : Swift::Sendable {
+  public typealias Stat = libplzma::plzma_path_stat
+  final public var count: PLzmaSDK::Size {
+    get
+  }
+  final public func exists() throws -> Swift::Bool
+  @discardableResult
+  final public func exists(isDir: inout Swift::Bool) throws -> Swift::Bool
+  final public func readable() throws -> Swift::Bool
+  final public func writable() throws -> Swift::Bool
+  final public func readableAndWritable() throws -> Swift::Bool
+  final public func stat() throws -> PLzmaSDK::Path.PLzmaSDK::Stat
+  final public func clear(erase: PLzmaSDK::Erase = .zero)
+  @discardableResult
+  final public func remove(skipErrors: Swift::Bool = false) throws -> Swift::Bool
+  final public func lastComponent() throws -> PLzmaSDK::Path
+  final public func createDir(withIntermediates: Swift::Bool) throws -> Swift::Bool
+  final public func applyFileTimestamp(timestamp: libplzma::plzma_path_timestamp) throws -> Swift::Bool
+  final public func openDir(mode: PLzmaSDK::OpenDirMode = .default) throws -> PLzmaSDK::Path.PLzmaSDK::Iterator
+  final public func appendRandomComponent() throws
+  final public func appendingRandomComponent() throws -> PLzmaSDK::Path
+  final public func append(component: PLzmaSDK::Path) throws
+  final public func append(_ component: Swift::String) throws
+  final public func set(path: PLzmaSDK::Path) throws
+  final public func set(_ string: Swift::String) throws
+  public init(path: PLzmaSDK::Path) throws
+  public init(_ string: Swift::String) throws
+  @objc deinit
+  public static func tmpDir() throws -> PLzmaSDK::Path
+}
+extension PLzmaSDK::Path {
+  public static func &= (left: PLzmaSDK::Path, right: PLzmaSDK::Path) throws
+  public static func &= (left: PLzmaSDK::Path, right: Swift::String) throws
+  public static func += (left: PLzmaSDK::Path, right: PLzmaSDK::Path) throws
+  public static func += (left: PLzmaSDK::Path, right: Swift::String) throws
+}
+extension PLzmaSDK::Path : Swift::CustomStringConvertible {
+  final public var description: Swift::String {
+    get
+  }
+}
+extension PLzmaSDK::Path : Swift::CustomDebugStringConvertible {
+  final public var debugDescription: Swift::String {
+    get
+  }
+}
+extension PLzmaSDK::Path {
+  @_hasMissingDesignatedInitializers final public class Iterator {
+    final public func component() throws -> PLzmaSDK::Path
+    final public func path() throws -> PLzmaSDK::Path
+    final public func fullPath() throws -> PLzmaSDK::Path
+    final public var isDir: Swift::Bool {
+      get
+    }
+    final public func next() throws -> Swift::Bool
+    final public func close()
+    @objc deinit
+  }
+}
+extension libplzma::plzma_path_timestamp {
+  public var creationDate: Foundation::Date {
+    get
+  }
+  public var lastAccessDate: Foundation::Date {
+    get
+  }
+  public var lastModificationDate: Foundation::Date {
+    get
+  }
+}
+extension libplzma::plzma_path_timestamp : Swift::CustomStringConvertible {
+  public var description: Swift::String {
+    get
+  }
+}
+extension libplzma::plzma_path_timestamp : Swift::CustomDebugStringConvertible {
+  public var debugDescription: Swift::String {
+    get
+  }
+}
+extension libplzma::plzma_path_stat {
+  public var creationDate: Foundation::Date {
+    get
+  }
+  public var lastAccessDate: Foundation::Date {
+    get
+  }
+  public var lastModificationDate: Foundation::Date {
+    get
+  }
+}
+extension libplzma::plzma_path_stat : Swift::CustomStringConvertible {
+  public var description: Swift::String {
+    get
+  }
+}
+extension libplzma::plzma_path_stat : Swift::CustomDebugStringConvertible {
+  public var debugDescription: Swift::String {
+    get
+  }
+}
+public typealias Size = libplzma::plzma_size_t
+extension libplzma::plzma_object : @unchecked @retroactive Swift::Sendable {
+}
+public protocol Enum {
+  associatedtype EType : Swift::RawRepresentable
+  var type: Self.EType { get }
+}
+extension PLzmaSDK::Enum where Self : Swift::RawRepresentable, Self.RawValue : Swift::BinaryInteger, Self.EType.RawValue : Swift::BinaryInteger {
+  public var type: Self.EType {
+    get
+  }
+}
+public enum ErrorCode : Swift::UInt8, PLzmaSDK::Enum, Swift::Sendable {
+  public typealias EType = libplzma::plzma_error_code
+  case unknown
+  case invalidArguments
+  case notEnoughMemory
+  case io
+  case `internal`
+  public init?(rawValue: Swift::UInt8)
+  public typealias RawValue = Swift::UInt8
+  public var rawValue: Swift::UInt8 {
+    get
+  }
+}
+extension libplzma::plzma_error_code : PLzmaSDK::Enum, @unchecked @retroactive Swift::Sendable {
+  public typealias EType = PLzmaSDK::ErrorCode
+}
+public enum Erase : Swift::UInt8, PLzmaSDK::Enum, Swift::Sendable {
+  public typealias EType = libplzma::plzma_erase
+  case none
+  case zero
+  public init?(rawValue: Swift::UInt8)
+  public typealias RawValue = Swift::UInt8
+  public var rawValue: Swift::UInt8 {
+    get
+  }
+}
+extension libplzma::plzma_erase : PLzmaSDK::Enum, @unchecked @retroactive Swift::Sendable {
+  public typealias EType = PLzmaSDK::Erase
+}
+public enum FileType : Swift::UInt8, PLzmaSDK::Enum, Swift::Sendable {
+  public typealias EType = libplzma::plzma_file_type
+  case sevenZ
+  case xz
+  case tar
+  public init?(rawValue: Swift::UInt8)
+  public typealias RawValue = Swift::UInt8
+  public var rawValue: Swift::UInt8 {
+    get
+  }
+}
+extension libplzma::plzma_file_type : PLzmaSDK::Enum, @unchecked @retroactive Swift::Sendable {
+  public typealias EType = PLzmaSDK::FileType
+}
+public enum Method : Swift::UInt8, PLzmaSDK::Enum, Swift::Sendable {
+  public typealias EType = libplzma::plzma_method
+  case LZMA
+  case LZMA2
+  case PPMd
+  public init?(rawValue: Swift::UInt8)
+  public typealias RawValue = Swift::UInt8
+  public var rawValue: Swift::UInt8 {
+    get
+  }
+}
+extension libplzma::plzma_method : PLzmaSDK::Enum, @unchecked @retroactive Swift::Sendable {
+  public typealias EType = PLzmaSDK::Method
+}
+public struct OpenDirMode : Swift::OptionSet, Swift::Sendable {
+  public typealias RawValue = libplzma::plzma_open_dir_mode_t
+  public let rawValue: libplzma::plzma_open_dir_mode_t
+  public init(rawValue: libplzma::plzma_open_dir_mode_t)
+  public static let `default`: PLzmaSDK::OpenDirMode
+  public static let followSymlinks: PLzmaSDK::OpenDirMode
+  public typealias ArrayLiteralElement = PLzmaSDK::OpenDirMode
+  public typealias Element = PLzmaSDK::OpenDirMode
+}
+public enum MultiStreamPartNameFormat : Swift::UInt8, PLzmaSDK::Enum, Swift::Sendable {
+  public typealias EType = libplzma::plzma_multi_stream_part_name_format
+  case nameExt00x
+  public init?(rawValue: Swift::UInt8)
+  public typealias RawValue = Swift::UInt8
+  public var rawValue: Swift::UInt8 {
+    get
+  }
+}
+extension libplzma::plzma_multi_stream_part_name_format : PLzmaSDK::Enum, @unchecked @retroactive Swift::Sendable {
+  public typealias EType = PLzmaSDK::MultiStreamPartNameFormat
+}
+extension PLzmaSDK::ErrorCode : Swift::Equatable {}
+extension PLzmaSDK::ErrorCode : Swift::Hashable {}
+extension PLzmaSDK::ErrorCode : Swift::RawRepresentable {}
+extension PLzmaSDK::Erase : Swift::Equatable {}
+extension PLzmaSDK::Erase : Swift::Hashable {}
+extension PLzmaSDK::Erase : Swift::RawRepresentable {}
+extension PLzmaSDK::FileType : Swift::Equatable {}
+extension PLzmaSDK::FileType : Swift::Hashable {}
+extension PLzmaSDK::FileType : Swift::RawRepresentable {}
+extension PLzmaSDK::Method : Swift::Equatable {}
+extension PLzmaSDK::Method : Swift::Hashable {}
+extension PLzmaSDK::Method : Swift::RawRepresentable {}
+extension PLzmaSDK::MultiStreamPartNameFormat : Swift::Equatable {}
+extension PLzmaSDK::MultiStreamPartNameFormat : Swift::Hashable {}
+extension PLzmaSDK::MultiStreamPartNameFormat : Swift::RawRepresentable {}

@@ -1,0 +1,10 @@
+framework module PLzmaSDK {
+  umbrella header "PLzmaSDK.h"
+  export *
+  module * { export * }
+}
+
+module libplzma {
+  header "../Headers/libplzma.h"
+  export *
+}
